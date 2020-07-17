@@ -5,7 +5,7 @@
 Curve coordinates are calculated for a temperature range of 2000 to 7000 Kelvin in 5 degree increments.
 
 JSON has 2D-array with name "points".
-```json
+```
 [[CCT, x, y], ...]
 ```
 CCT - correlated color temperature
