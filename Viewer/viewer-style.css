@@ -1,0 +1,21 @@
+body {
+  background-color: #191a15;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1em;
+  color: #dddddd;
+}
+
+.bm-grid path {
+  stroke: #ccc;
+}
+
+.bm-grid text {
+  font-size: 32px;
+  fill: #bbb;
+}
+
+.planck-curve path {
+  stroke-width: 1;
+  stroke: rgb(199, 199, 199);
+  fill: none;
+}
