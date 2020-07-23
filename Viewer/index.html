@@ -8,30 +8,26 @@
     <link rel="stylesheet" href="viewer-style.css" type="text/css" media="all" />
   </head>
   <body>
-    <noscript>Please enable JavaScript on this page!</noscript>
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <svg width="100%" viewBox="2900 2900 2150 1550" xmlns="http://www.w3.org/2000/svg" id="binmapCanvas" transform="scale(1,-1)">
-            <g class="bm-grid">
-              <!--temporarily specifying canvas borders-->
-              <path d="M 2900 2900 h 100" stroke-width="10" />
-              <path d="M 2900 2900 v 100" stroke-width="10" />
-              <path d="M 3000 3000 h -50" stroke-width="3" />
-              <path d="M 3000 3000 v -50" stroke-width="3" />
-              <path d="M 5050 4450 h -100" stroke-width="10" />
-              <path d="M 5050 4450 v -100" stroke-width="10" />
-              <!--end-->
-              <path d="M 3990 3000 V 4501" stroke-width="2020" stroke-dasharray="1,99" />
-              <path d="M 3000 3690 H 5001" stroke-width="1420" stroke-dasharray="1,99" />
-            </g>
-            No SVG - no cartoons!
-          </svg>
+    <noscript>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <p class="display-4 mt-5">Please,<br /> enable JavaScript on&nbsp;this&nbsp;page!</p>
+          </div>
         </div>
       </div>
+    </noscript>
+    <div class="container">
+      <div class="row">
+        <div class="col" id="workzone"></div>
+      </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="BinMaps.js"></script>
+    <script>
+      let binmap = new BinMaps("workzone");
+      binmap.initializeCanvas();
+      binmap.showFullGrid();
+      binmap.showAncorsCanvas();
+    </script>
   </body>
 </html>

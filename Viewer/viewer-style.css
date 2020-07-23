@@ -5,6 +5,10 @@ body {
   color: #dddddd;
 }
 
+#binmapCanvas {
+  width: 100%;
+}
+
 .bm-grid path {
   stroke: #ccc;
 }
