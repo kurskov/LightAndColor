@@ -5,17 +5,18 @@ body {
   color: #dddddd;
 }
 
-#binmapCanvas {
-  width: 100%;
-}
-
 .bm-grid path {
   stroke: #ccc;
+  stroke-width: 1;
 }
 
 .bm-grid text {
-  font-size: 32px;
+  font-size: 24px;
   fill: #bbb;
+}
+
+.bm-anchors {
+  stroke-width: 10;
 }
 
 .planck-curve path {

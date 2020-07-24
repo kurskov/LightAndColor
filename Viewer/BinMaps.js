@@ -2,82 +2,103 @@
 
 class BinMaps {
   
+  minX = 3000;
+  maxX = 5000;
+  minY = 3000;
+  maxY = 4500;
+  pitchGridX = 100;
+  pitchGridY = 100;
+  axisXWidth = 150;
+  axisYWidth = 150;
+  mapField = 50;
+
   constructor(id) {
     this.place = document.getElementById(id);
     if (this.place === null) window.stop();
   }
 
-  initializeCanvas(startX = 2850, startY = 2850, width = 2200, height = 1600, flip = true) {
-    this.startCanvasX = startX;
-    this.startCanvasY = startY;
-    this.widthCanvas = width;
-    this.heightCanvas = height;
+  initMap() {
+    this.map = this.getSVGNode('svg', {'id': 'binmapsGraph', 'width': '100%',
+      'viewBox': `${this.minX - this.axisYWidth - this.mapField} ${this.minY - this.axisXWidth - this.mapField} ${this.maxX - this.minX + 1 + 2 * this.mapField + this.axisYWidth} ${this.maxY - this.minY + 1 + 2 * this.mapField + this.axisYWidth}`, 
+      'transform': 'scale(1,-1)'});
+    this.map.textContent = "No SVG - no cartoons!";
+    this.place.append(this.map);
+    
+    return this;
+  }
 
-    this.canvas = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    this.canvas.id = "binmapCanvas";
-    this.canvas.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
-    this.canvas.setAttribute(`viewBox`, `${this.startCanvasX} ${this.startCanvasY} ${this.widthCanvas} ${this.heightCanvas}`);
-    this.canvas.textContent = "No SVG - no cartoons!";
-
-    if (flip) { 
-      this.canvas.setAttribute("transform", "scale(1,-1)"); 
+  showGrid() {
+    let grid = this.getSVGNode('g', {'class': 'bm-grid', 'id': 'bm-grid'});
+    this.map.append(grid);
+    
+    //H lines
+    for (let i = this.minY; i <= this.maxY + 1;) {
+      grid.append(this.getSVGNode('path', {'d': `M ${this.minX - 20} ${i} H ${this.maxX}`}));
+      i += this.pitchGridY;
+    }
+    //V lines
+    for (let i = this.minX; i <= this.maxX + 1;) {
+      grid.append(this.getSVGNode('path', {'d': `M ${i} ${this.minY - 20} V ${this.maxY}`}));
+      i += this.pitchGridX;
     }
 
-    this.place.append(this.canvas);
-    
+    let axis = this.getSVGNode('g', {'class': 'bm-grid', 'id': 'bm-grid-axis', 'transform': 'scale(1,-1)'});
+    this.map.append(axis);
+
+    // axis X
+    for (let i = 0; i < 21; i++) {
+      let textLabel = this.getSVGNode('text', {'x': 2960 + (i * 100), 'y': -2930, });
+      textLabel.textContent = "0." + (3000 + (i * 100));
+      axis.append(textLabel);
+    }
+
+    // axis Y
+    for (let i = 0; i < 16; i++) {
+      let textLabel = this.getSVGNode('text', {'x': 2880, 'y': -2995 - (i * 100)});
+      textLabel.textContent = 3000 + (i * 100);
+      axis.append(textLabel);
+    }
+
     return this;
   }
 
   showFullGrid() {
-    let group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    group.id  = "grid456";
-    group.setAttribute("class", "bm-grid");;
-    this.canvas.append(group);
+    this.showGrid();
 
-    let grid = document.getElementById('grid456');
+    //let grid = document.getElementById('fullGrid');
+    return this;
+  }
+  
+  /**
+   * Draws marks around the edges of the picture to display its dimensions.
+   * This is a utility function for debugging a program.
+   * 
+   * @param {SVGElement} map
+   */
+  showCanvasAnchors(target) {
+    map.append(this.getSVGNode('g',{'class': 'bm-grid bm-anchors', 'id': 'svgCanvasAnchors'}));
 
-    let linesV = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    linesV.setAttribute("d", "M 3990 3000 V 4501");
-    linesV.setAttribute("stroke-width", "2020");
-    linesV.setAttribute("stroke-dasharray", "1,99");
-    grid.append(linesV);
+    let canvasAnchors = document.getElementById('svgCanvasAnchors');
 
-    let linesH = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    linesH.setAttribute("d", "M 3000 3690 H 5001");
-    linesH.setAttribute("stroke-width", "1420");
-    linesH.setAttribute("stroke-dasharray", "1,99");
-    grid.append(linesH);
-
-    grid.append(this.getSVG('path', {"d": "M 3500 3500 H 4000"}));
-
-    for (let i = 0; i < 10; i++) {
-      let textLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      textLabel.setAttribute('x', 2960 + (i * 100));
-      textLabel.setAttribute('y', 2950);
-      //textLabel.setAttribute("rotate", "90"); 
-      textLabel.textContent = 3000 + (i * 100);
-      grid.append(textLabel);
-    }
+    canvasAnchors.append(this.getSVGNode('path', {'d': `M ${this.startCanvasX} ${this.startCanvasY} h 100`}));
+    canvasAnchors.append(this.getSVGNode('path', {'d': `M ${this.startCanvasX} ${this.startCanvasY} v 100`}));
+    canvasAnchors.append(this.getSVGNode('path', {'d': `M ${this.startCanvasX + this.widthCanvas} ${this.startCanvasY + this.heightCanvas} h -100`}));
+    canvasAnchors.append(this.getSVGNode('path', {'d': `M ${this.startCanvasX + this.widthCanvas} ${this.startCanvasY + this.heightCanvas} v -100`}));
 
     return this;
   }
 
-  showAncorsCanvas() {
-    this.canvas.innerHTML += `<g class="bm-grid">
-      <path d="M 2850 2850 h 100" stroke-width="10" />
-      <path d="M 2850 2850 v 100" stroke-width="10" />
-      <path d="M 5050 4450 h -100" stroke-width="10" />
-      <path d="M 5050 4450 v -100" stroke-width="10" />
-    </g>`;
-
-    return this;
-  }
-
-  getSVG(node, attr) {
-    node = document.createElementNS("http://www.w3.org/2000/svg", node);
+  /**
+   * Create DOM node as SVG element with any parameters
+   * @param {string} node - node name (f.e.: svg, g, path...)
+   * @param {object} attr - an object containing parameters ({name: value, ...})
+   * @returns {SVGElement} DOM node
+   */
+  getSVGNode(node, attr) {
+    node = document.createElementNS('http://www.w3.org/2000/svg', node);
     
     for (let property in attr) {
-      node.setAttributeNS("http://www.w3.org/2000/svg", property, attr[property]);
+      node.setAttributeNS(null, property, attr[property]);
     }
 
     return node;
